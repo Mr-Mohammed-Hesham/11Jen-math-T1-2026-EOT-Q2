@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📐 Similar Polygons Properties - رياضيات 11 عام | Mr. Mohammed Hesham</title>
+<meta name="description" content="امتحان تفاعلي عن استخدام خواص المضلعات المتشابهة - رياضيات صف 11 عام">
+<meta name="author" content="Mr. Mohammed Hesham">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Inter:wght@400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); }
+body.en-mode { font-family: 'Inter', sans-serif; direction: ltr; }
+.arabic-math { font-family: 'Amiri', 'Cairo', serif; }
+.correct { background-color: #dcfce7 !important; border-color: #16a34a !important; }
+.incorrect { background-color: #fee2e2 !important; border-color: #dc2626 !important; }
+.timer-warning { color: #dc2626 !important; animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: 0.7; } }
+@media print { .no-print { display: none !important; } }
+.success-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: bold; font-size: 0.875rem; }
+.grade-excellent { background: #dcfce7; color: #166534; }
+.grade-good { background: #fef3c7; color: #92400e; }
+.grade-pass { background: #dbeafe; color: #1e40af; }
+.grade-fail { background: #fee2e2; color: #991b1b; }
+.lang-switch { position: fixed; top: 16px; left: 16px; z-index: 100; background: white; padding: 6px; border-radius: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); display: flex; gap: 4px; border: 2px solid #1d4ed8; }
+body.en-mode .lang-switch { left: auto; right: 16px; }
+.lang-btn { padding: 6px 14px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.3s; border: none; font-size: 0.875rem; background: transparent; color: #6b7280; }
+.lang-btn.active { background: #1d4ed8; color: white; }
+.shuffle-badge { display: inline-block; background: linear-gradient(135deg, #1d4ed8, #1e40af); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; margin-right: 8px; }
+body.en-mode .shuffle-badge { margin-right: 0; margin-left: 8px; }
+.math-display { display: inline-block; direction: ltr; font-family: 'Amiri', serif; font-size: 1.15em; padding: 2px 8px; background: #dbeafe; border-radius: 4px; margin: 2px; color: #1e40af; font-weight: 700; }
+.save-indicator { position: fixed; bottom: 20px; left: 20px; z-index: 200; background: #10b981; color: white; padding: 8px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+body.en-mode .save-indicator { left: auto; right: 20px; }
+.save-indicator.show { opacity: 1; }
+.formula-box { background: #dbeafe; border: 2px solid #1d4ed8; border-radius: 8px; padding: 12px; margin: 10px 0; font-family: 'Amiri', serif; direction: ltr; text-align: center; }
+.svg-graph { display: block; margin: 12px auto; background: white; border: 2px solid #e5e7eb; border-radius: 12px; padding: 8px; max-width: 100%; }
+.graph-container { text-align: center; margin: 10px 0; }
+.module-badge { display: inline-block; padding: 4px 16px; border-radius: 20px; font-weight: bold; font-size: 0.85rem; margin-bottom: 8px; }
+.module-1 { background: #dbeafe; color: #1e40af; }
+.module-2 { background: #fce7f3; color: #9f1239; }
+.module-3 { background: #ecfdf5; color: #065f46; }
+.module-4 { background: #fef3c7; color: #92400e; }
+.module-5 { background: #ede9fe; color: #5b21b6; }
+.module-6 { background: #fee2e2; color: #991b1b; }
+</style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+
+<div class="lang-switch no-print">
+<button class="lang-btn active" onclick="setLanguage('ar')" id="btn-ar">عربي</button>
+<button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+</div>
+
+<div id="saveIndicator" class="save-indicator">💾 <span data-ar="تم الحفظ" data-en="Saved">تم الحفظ</span></div>
+
+<div id="timer-container" class="max-w-5xl mx-auto mb-4 text-center no-print">
+<div class="bg-white p-4 rounded-2xl shadow-lg inline-block border-2 border-blue-100">
+<span class="text-gray-600 ml-2">⏰ <span data-ar="الوقت المتبقي:" data-en="Time Left:">الوقت المتبقي:</span></span>
+<span id="timer" class="text-2xl font-bold text-blue-700 font-mono">45:00</span>
+<span class="shuffle-badge">📐 <span data-ar="المضلعات المتشابهة" data-en="Similar Polygons">المضلعات المتشابهة</span> - 30 <span data-ar="سؤال" data-en="Questions">سؤال</span></span>
+</div>
+</div>
+
+<div class="max-w-5xl mx-auto mb-6 flex flex-wrap gap-3 justify-center no-print">
+<button onclick="toggleAnswers()" class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-xl font-medium transition shadow">👀 <span data-ar="إظهار/إخفاء الإجابات" data-en="Show/Hide Answers">إظهار/إخفاء الإجابات</span></button>
+<button onclick="window.print()" class="bg-gray-700 hover:bg-gray-900 text-white px-5 py-2 rounded-xl font-medium transition shadow">🖨️ <span data-ar="طباعة" data-en="Print">طباعة</span></button>
+<button onclick="reshuffleExam()" class="bg-gradient-to-r from-blue-700 to-indigo-600 hover:from-blue-800 hover:to-indigo-700 text-white px-5 py-2 rounded-xl font-medium transition shadow">🔄 <span data-ar="أسئلة جديدة" data-en="New Questions">أسئلة جديدة</span></button>
+<button onclick="clearProgress()" class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-xl font-medium transition shadow">🗑️ <span data-ar="مسح التقدم" data-en="Clear Progress">مسح التقدم</span></button>
+</div>
+
+<header class="max-w-5xl mx-auto bg-white p-8 rounded-3xl shadow-2xl mb-8 border-4 border-blue-500">
+<div class="text-center">
+<div class="inline-block bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-bold mb-4">MATH GRADE 11 GENERAL - QUESTION 2</div>
+<h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">📐 <span data-ar="استخدام خواص المضلعات المتشابهة" data-en="Using Properties of Similar Polygons">استخدام خواص المضلعات المتشابهة</span></h1>
+<h2 class="text-xl text-blue-700 font-semibold mb-2"><span data-ar="الوحدة 1 - الدرس 1-2 | ص 18 (تمارين 22 - 24)" data-en="Unit 1 - Lesson 1-2 | Page 18 (Ex. 22-24)">الوحدة 1 - الدرس 1-2 | ص 18 (تمارين 22 - 24)</span></h2>
+<p class="text-gray-600 mb-4"><span data-ar="معامل المقياس، نسب المحيطات والمساحات في الأشكال المتشابهة" data-en="Scale factor, perimeter & area ratios of similar figures">معامل المقياس، نسب المحيطات والمساحات في الأشكال المتشابهة</span></p>
+<p class="text-sm text-green-600 font-semibold">💾 <span data-ar="يتم حفظ تقدمك تلقائياً - 30 سؤالاً في 6 أقسام" data-en="Auto-saved - 30 questions in 6 sections">يتم حفظ تقدمك تلقائياً - 30 سؤالاً في 6 أقسام</span></p>
+</div>
+<div class="mt-6 flex flex-wrap justify-center gap-4 text-sm text-gray-600">
+<span>📅 <span data-ar="التاريخ:" data-en="Date:">التاريخ:</span> <input type="text" id="examDate" class="border-b-2 border-blue-300 bg-transparent w-32 text-center"></span>
+<span>😊 <span data-ar="الاسم:" data-en="Name:">الاسم:</span> <input type="text" id="studentName" class="border-b-2 border-blue-300 bg-transparent w-40 text-center" data-placeholder-ar="اكتب اسمك" data-placeholder-en="Your name" placeholder="اكتب اسمك"></span>
+<span>🏫 <span data-ar="الشعبة:" data-en="Class:">الشعبة:</span> <input type="text" id="studentClass" class="border-b-2 border-blue-300 bg-transparent w-32 text-center" data-placeholder-ar="الشعبة" data-placeholder-en="Class" placeholder="الشعبة"></span>
+<span>⏰ <span data-ar="المدة: 45 دقيقة" data-en="Duration: 45 min">المدة: 45 دقيقة</span></span>
+<span>📊 <span data-ar="المجموع: 100 درجة" data-en="Total: 100 points">المجموع: 100 درجة</span></span>
+</div>
+</header>
+
+<div class="max-w-5xl mx-auto mb-6 bg-white p-4 rounded-xl shadow-lg border-2 border-blue-200 no-print">
+<h3 class="font-bold text-lg mb-3 text-blue-800 text-center">📐 <span data-ar="خواص المضلعات المتشابهة" data-en="Properties of Similar Polygons">خواص المضلعات المتشابهة</span></h3>
+<div class="grid md:grid-cols-3 gap-3 text-sm">
+<div class="formula-box">
+<strong><span data-ar="معامل المقياس:" data-en="Scale Factor:">معامل المقياس:</span></strong><br>
+<span class="math-display">k = a/b</span><br>
+<span data-ar="نسبة ضلعين متناظرين" data-en="Ratio of corresponding sides">نسبة ضلعين متناظرين</span>
+</div>
+<div class="formula-box">
+<strong><span data-ar="نسبة المحيطين:" data-en="Perimeter Ratio:">نسبة المحيطين:</span></strong><br>
+<span class="math-display">P₁/P₂ = a/b = k</span><br>
+<span data-ar="تساوي معامل المقياس" data-en="Equals scale factor">تساوي معامل المقياس</span>
+</div>
+<div class="formula-box">
+<strong><span data-ar="نسبة المساحتين:" data-en="Area Ratio:">نسبة المساحتين:</span></strong><br>
+<span class="math-display">A₁/A₂ = (a/b)² = k²</span><br>
+<span data-ar="مربع معامل المقياس" data-en="Square of scale factor">مربع معامل المقياس</span>
+</div>
+</div>
+<div id="method-holder" class="mt-2"></div>
+</div>
+
+<main class="max-w-5xl mx-auto space-y-8" id="exam-content"></main>
+
+<div class="text-center no-print pb-8 mt-8">
+<button onclick="gradeExam()" class="bg-gradient-to-r from-blue-700 to-indigo-600 hover:from-blue-800 hover:to-indigo-700 text-white text-lg px-12 py-4 rounded-2xl font-bold shadow-xl transition transform hover:scale-105">🎯 <span data-ar="صحح إجاباتي!" data-en="Grade My Exam!">صحح إجاباتي!</span></button>
+</div>
+
+<div id="results-panel" class="max-w-5xl mx-auto mt-8 bg-white p-8 rounded-3xl shadow-2xl border-4 border-blue-500 hidden no-print">
+<h2 class="text-3xl font-bold text-gray-900 mb-6 text-center">🏆 <span data-ar="نتيجتك يا بطل!" data-en="Your Result, Champion!">نتيجتك يا بطل!</span> 🏆</h2>
+<div class="grid md:grid-cols-3 gap-4 mb-6">
+<div class="bg-blue-50 p-4 rounded-xl text-center"><p>😊 <span data-ar="الاسم" data-en="Name">الاسم</span></p><p id="res-name" class="font-bold text-xl text-blue-700">-</p></div>
+<div class="bg-indigo-50 p-4 rounded-xl text-center"><p>📅 <span data-ar="التاريخ" data-en="Date">التاريخ</span></p><p id="res-date" class="font-bold text-xl text-indigo-700">-</p></div>
+<div class="bg-blue-50 p-4 rounded-xl text-center"><p>🌟 <span data-ar="المجموع" data-en="Total">المجموع</span></p><p id="res-total" class="font-bold text-3xl text-blue-700">0 / 100</p></div>
+</div>
+<div class="text-center mb-6">
+<span id="success-badge" class="success-badge grade-excellent">-</span>
+<p id="success-percent" class="text-4xl font-bold text-blue-700 mt-2">0%</p>
+<p class="text-sm text-gray-500"><span data-ar="نسبة النجاح" data-en="Success Rate">نسبة النجاح</span></p>
+</div>
+<div class="bg-gray-50 p-6 rounded-xl mb-6">
+<h3 class="font-bold text-lg mb-4 text-gray-800">📊 <span data-ar="أداؤك في كل قسم:" data-en="Your Performance by Section:">أداؤك في كل قسم:</span></h3>
+<div class="space-y-3" id="sections-performance"></div>
+</div>
+<div class="text-center">
+<button id="sendEmailBtn" onclick="sendResultsToEmail()" class="bg-gradient-to-r from-blue-700 to-indigo-600 text-white text-lg px-8 py-3 rounded-2xl font-bold shadow-xl transition">📧 <span data-ar="أرسل النتيجة للمعلم" data-en="Send Result to Teacher">أرسل النتيجة للمعلم</span></button>
+<p id="emailStatus" class="text-sm mt-2 text-center font-medium"></p>
+</div>
+</div>
+
+<footer class="max-w-5xl mx-auto mt-10 mb-8 text-center text-gray-500 text-sm no-print">
+© Similar Polygons - Grade 11 General | Mr. Mohammed Hesham 📐
+</footer>
+
+<script>
+const PUBLIC_KEY = "Rb3Lq8tXaFmc5YHUH";
+const SERVICE_ID = "service_w15m64i";
+const TEMPLATE_ID = "template_5b0u2tq";
+const TARGET_EMAIL = "mohammedhesham872@gmail.com";
+emailjs.init(PUBLIC_KEY);
+
+const STORAGE_KEY = 'similar_polygons_grade11_v1';
+const TOTAL_TIME = 2700;
+const TOTAL_QUESTIONS = 30;
+const TOTAL_SECTIONS = 6;
+const QUESTIONS_PER_SECTION = 5;
+
+let currentSeed = null, answersVisible = false, saveIndicatorTimeout = null;
+let currentLang = 'ar', timeRemaining = TOTAL_TIME, timerInterval;
+let examData, correctAnswersMap = {}, rng = null;
+
+function mulberry32(a){return function(){var t=a+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+function showSaveIndicator(){const i=document.getElementById('saveIndicator');i.classList.add('show');if(saveIndicatorTimeout)clearTimeout(saveIndicatorTimeout);saveIndicatorTimeout=setTimeout(()=>i.classList.remove('show'),1500)}
+function saveState(s=true){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({seed:currentSeed,lang:currentLang,studentName:document.getElementById('studentName').value,studentClass:document.getElementById('studentClass').value,examDate:document.getElementById('examDate').value,answers:getSelectedAnswers(),timeRemaining:timeRemaining,answersVisible:answersVisible,savedAt:Date.now()}));if(s)showSaveIndicator()}catch(e){console.error(e)}}
+function loadState(){try{const s=localStorage.getItem(STORAGE_KEY);return s?JSON.parse(s):null}catch(e){return null}}
+function getSelectedAnswers(){const a={};for(let i=0;i<TOTAL_QUESTIONS;i++){const s=document.querySelector('input[name="q'+i+'"]:checked');if(s)a[i]=s.value}return a}
+function restoreAnswers(a){if(!a)return;for(const[i,v]of Object.entries(a)){const r=document.querySelector('input[name="q'+i+'"][value="'+v+'"]');if(r)r.checked=true}}
+function clearProgress(){if(confirm(currentLang==='ar'?'⚠️ هل أنت متأكد من مسح كل التقدم؟':'⚠️ Clear all progress?')){localStorage.removeItem(STORAGE_KEY);location.reload()}}
+function setupAnswerListeners(){document.getElementById('exam-content').addEventListener('change',e=>{if(e.target.type==='radio')saveState()})}
+function setupInputListeners(){['studentName','studentClass','examDate'].forEach(id=>{const el=document.getElementById(id);if(el){el.addEventListener('input',()=>saveState(false));el.addEventListener('blur',()=>saveState())}})}
+
+// ==================== SVG DIAGRAMS ====================
+const svgGraphs = {
+rules_visual: `<svg class="svg-graph" width="480" height="230" viewBox="0 0 480 230" xmlns="http://www.w3.org/2000/svg">
+<rect x="5" y="5" width="470" height="220" rx="12" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2"/>
+<text x="240" y="28" text-anchor="middle" font-size="14" fill="#1e40af" font-weight="bold">📐 خواص التشابه الثلاث</text>
+<rect x="25" y="45" width="135" height="80" rx="8" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="2"/>
+<text x="92" y="68" text-anchor="middle" font-size="11" fill="#1e40af" font-weight="bold">معامل المقياس</text>
+<text x="92" y="92" text-anchor="middle" font-size="14" fill="#1e40af" font-family="'Amiri',serif" font-weight="bold">k = a/b</text>
+<text x="92" y="112" text-anchor="middle" font-size="9" fill="#1e40af">أضلاع متناظرة</text>
+<rect x="172" y="45" width="135" height="80" rx="8" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="2"/>
+<text x="240" y="68" text-anchor="middle" font-size="11" fill="#1e40af" font-weight="bold">نسبة المحيطين</text>
+<text x="240" y="92" text-anchor="middle" font-size="14" fill="#1e40af" font-family="'Amiri',serif" font-weight="bold">P₁/P₂ = k</text>
+<text x="240" y="112" text-anchor="middle" font-size="9" fill="#1e40af">نفس المعامل (خطية)</text>
+<rect x="320" y="45" width="135" height="80" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="388" y="68" text-anchor="middle" font-size="11" fill="#166534" font-weight="bold">نسبة المساحتين</text>
+<text x="388" y="92" text-anchor="middle" font-size="14" fill="#166534" font-family="'Amiri',serif" font-weight="bold">A₁/A₂ = k²</text>
+<text x="388" y="112" text-anchor="middle" font-size="9" fill="#166534">مربع المعامل!</text>
+<rect x="25" y="140" width="430" height="70" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+<text x="240" y="162" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">💡 مثال: معامل 1:2 ⇒ المحيطان 1:2 والمساحتان 1:4</text>
+<text x="240" y="182" text-anchor="middle" font-size="10" fill="#92400e">مثال 22: المستطيلان 8×20 و 16×40: المحيط 56 و 112 (نسبة 1:2) ✓</text>
+<text x="240" y="200" text-anchor="middle" font-size="10" fill="#92400e">المساحتان: 160 و 640 (نسبة 1:4) ✓</text>
+</svg>`,
+
+rects22: `<svg class="svg-graph" width="480" height="260" viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg">
+<rect x="5" y="5" width="470" height="250" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+<text x="240" y="28" text-anchor="middle" font-size="14" fill="#92400e" font-weight="bold">السؤال 22: مستطيلان متشابهان ABCD و QRST</text>
+<rect x="50" y="120" width="100" height="40" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="2.5"/>
+<text x="100" y="112" text-anchor="middle" font-size="11" fill="#1e40af" font-weight="bold">20 m</text>
+<text x="38" y="145" text-anchor="middle" font-size="11" fill="#1e40af" font-weight="bold">8 m</text>
+<text x="100" y="178" text-anchor="middle" font-size="10" fill="#1e40af">ABCD</text>
+<path d="M 165 140 L 215 140" stroke="#dc2626" stroke-width="2.5" marker-end="url(#xr)"/>
+<text x="190" y="130" text-anchor="middle" font-size="11" fill="#dc2626" font-weight="bold">×2</text>
+<rect x="230" y="80" width="200" height="80" fill="#a5f3fc" stroke="#0891b2" stroke-width="2.5"/>
+<text x="330" y="72" text-anchor="middle" font-size="11" fill="#0e7490" font-weight="bold">40 m</text>
+<text x="216" y="125" text-anchor="middle" font-size="11" fill="#0e7490" font-weight="bold">16 m</text>
+<text x="330" y="178" text-anchor="middle" font-size="10" fill="#0e7490">QRST</text>
+<rect x="50" y="195" width="380" height="48" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="240" y="214" text-anchor="middle" font-size="11" fill="#166534" font-weight="bold">معامل المقياس: 20/40 = 1:2</text>
+<text x="240" y="232" text-anchor="middle" font-size="11" fill="#166534" font-family="'Amiri',serif">P(ABCD) = 2(8+20) = 56 m | P(QRST) = 2×56 = 112 m</text>
+<defs><marker id="xr" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4 z" fill="#dc2626"/></marker></defs>
+</svg>`,
+
+tri23: `<svg class="svg-graph" width="480" height="260" viewBox="0 0 480 260" xmlns="http://www.w3.org/2000/svg">
+<rect x="5" y="5" width="470" height="250" rx="12" fill="#fce7f3" stroke="#ec4899" stroke-width="2"/>
+<text x="240" y="28" text-anchor="middle" font-size="14" fill="#9f1239" font-weight="bold">السؤال 23: △ABC ~ △DEF</text>
+<polygon points="95,60 60,180 160,180" fill="#fbcfe8" stroke="#ec4899" stroke-width="2.5"/>
+<text x="95" y="52" text-anchor="middle" font-size="11" fill="#9f1239" font-weight="bold">A</text>
+<text x="52" y="196" text-anchor="middle" font-size="11" fill="#9f1239" font-weight="bold">B</text>
+<text x="168" y="196" text-anchor="middle" font-size="11" fill="#9f1239" font-weight="bold">C</text>
+<text x="66" y="120" font-size="10" fill="#9f1239">5</text>
+<text x="105" y="194" font-size="10" fill="#9f1239">6</text>
+<text x="132" y="120" font-size="10" fill="#9f1239">7</text>
+<polygon points="300,110 279,180 339,180" fill="#fdf2f8" stroke="#ec4899" stroke-width="2.5"/>
+<text x="300" y="102" text-anchor="middle" font-size="11" fill="#9f1239" font-weight="bold">D</text>
+<text x="271" y="196" text-anchor="middle" font-size="11" fill="#9f1239" font-weight="bold">E</text>
+<text x="347" y="196" text-anchor="middle" font-size="11" fill="#9f1239" font-weight="bold">F</text>
+<text x="281" y="150" font-size="10" fill="#9f1239">3</text>
+<rect x="180" y="60" width="120" height="40" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+<text x="240" y="78" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">DE/AB = 3/5</text>
+<text x="240" y="94" text-anchor="middle" font-size="9" fill="#92400e">معامل المقياس</text>
+<rect x="50" y="210" width="380" height="40" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="240" y="227" text-anchor="middle" font-size="11" fill="#166534" font-family="'Amiri',serif">P(ABC) = 5+6+7 = 18  ⇒  P(DEF) = 18 × 3/5 = 10.8</text>
+<text x="240" y="243" text-anchor="middle" font-size="10" fill="#166534">المحيط يتناسب طردياً مع معامل المقياس</text>
+</svg>`,
+
+tri24: `<svg class="svg-graph" width="480" height="250" viewBox="0 0 480 250" xmlns="http://www.w3.org/2000/svg">
+<rect x="5" y="5" width="470" height="240" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="240" y="28" text-anchor="middle" font-size="14" fill="#065f46" font-weight="bold">السؤال 24: △WZX ~ △SRT</text>
+<polygon points="95,80 60,170 135,170" fill="#d1fae5" stroke="#10b981" stroke-width="2.5"/>
+<text x="95" y="72" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">W</text>
+<text x="52" y="186" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">Z</text>
+<text x="143" y="186" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">X</text>
+<text x="122" y="125" font-size="10" fill="#065f46">5</text>
+<polygon points="310,55 272,170 350,170" fill="#ecfdf5" stroke="#10b981" stroke-width="2.5"/>
+<text x="310" y="47" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">S</text>
+<text x="263" y="186" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">R</text>
+<text x="359" y="186" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">T</text>
+<text x="336" y="115" font-size="10" fill="#065f46">6</text>
+<rect x="170" y="80" width="140" height="46" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+<text x="240" y="99" text-anchor="middle" font-size="11" fill="#92400e" font-weight="bold">WX/ST = 5/6</text>
+<text x="240" y="117" text-anchor="middle" font-size="9" fill="#92400e">P(SRT) = 15 معلوم</text>
+<rect x="50" y="200" width="380" height="38" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="240" y="224" text-anchor="middle" font-size="12" fill="#166534" font-family="'Amiri',serif" font-weight="bold">P(WZX) = 15 × 5/6 = 12.5</text>
+</svg>`,
+
+area_squares: `<svg class="svg-graph" width="480" height="250" viewBox="0 0 480 250" xmlns="http://www.w3.org/2000/svg">
+<rect x="5" y="5" width="470" height="240" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+<text x="240" y="28" text-anchor="middle" font-size="14" fill="#5b21b6" font-weight="bold">🟦 نسبة المساحتين = مربع معامل المقياس</text>
+<g stroke="#7c3aed" stroke-width="1">
+<rect x="60" y="90" width="30" height="30" fill="#ddd6fe"/><rect x="90" y="90" width="30" height="30" fill="#ddd6fe"/>
+<rect x="60" y="120" width="30" height="30" fill="#ddd6fe"/><rect x="90" y="120" width="30" height="30" fill="#ddd6fe"/>
+</g>
+<rect x="60" y="90" width="60" height="60" fill="none" stroke="#5b21b6" stroke-width="2.5"/>
+<text x="90" y="82" text-anchor="middle" font-size="10" fill="#5b21b6" font-weight="bold">ضلع = 2</text>
+<text x="90" y="168" text-anchor="middle" font-size="10" fill="#5b21b6">المساحة = 4</text>
+<g stroke="#7c3aed" stroke-width="0.8">
+<rect x="230" y="45" width="30" height="30" fill="#c4b5fd"/><rect x="260" y="45" width="30" height="30" fill="#c4b5fd"/><rect x="290" y="45" width="30" height="30" fill="#c4b5fd"/><rect x="320" y="45" width="30" height="30" fill="#c4b5fd"/><rect x="350" y="45" width="30" height="30" fill="#c4b5fd"/>
+<rect x="230" y="75" width="30" height="30" fill="#c4b5fd"/><rect x="260" y="75" width="30" height="30" fill="#c4b5fd"/><rect x="290" y="75" width="30" height="30" fill="#c4b5fd"/><rect x="320" y="75" width="30" height="30" fill="#c4b5fd"/><rect x="350" y="75" width="30" height="30" fill="#c4b5fd"/>
+<rect x="230" y="105" width="30" height="30" fill="#c4b5fd"/><rect x="260" y="105" width="30" height="30" fill="#c4b5fd"/><rect x="290" y="105" width="30" height="30" fill="#c4b5fd"/><rect x="320" y="105" width="30" height="30" fill="#c4b5fd"/><rect x="350" y="105" width="30" height="30" fill="#c4b5fd"/>
+<rect x="230" y="135" width="30" height="30" fill="#c4b5fd"/><rect x="260" y="135" width="30" height="30" fill="#c4b5fd"/><rect x="290" y="135" width="30" height="30" fill="#c4b5fd"/><rect x="320" y="135" width="30" height="30" fill="#c4b5fd"/><rect x="350" y="135" width="30" height="30" fill="#c4b5fd"/>
+<rect x="230" y="165" width="30" height="30" fill="#c4b5fd"/><rect x="260" y="165" width="30" height="30" fill="#c4b5fd"/><rect x="290" y="165" width="30" height="30" fill="#c4b5fd"/><rect x="320" y="165" width="30" height="30" fill="#c4b5fd"/><rect x="350" y="165" width="30" height="30" fill="#c4b5fd"/>
+</g>
+<rect x="230" y="45" width="150" height="150" fill="none" stroke="#5b21b6" stroke-width="2.5"/>
+<text x="305" y="37" text-anchor="middle" font-size="10" fill="#5b21b6" font-weight="bold">ضلع = 5</text>
+<text x="305" y="212" text-anchor="middle" font-size="10" fill="#5b21b6">المساحة = 25</text>
+<rect x="60" y="222" width="360" height="22" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="240" y="238" text-anchor="middle" font-size="11" fill="#166534" font-weight="bold">المقياس 2:5 ⇒ المحيطان 2:5 لكن المساحتان 4:25 ✓</text>
+</svg>`,
+
+always_similar: `<svg class="svg-graph" width="480" height="240" viewBox="0 0 480 240" xmlns="http://www.w3.org/2000/svg">
+<rect x="5" y="5" width="470" height="230" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+<text x="240" y="28" text-anchor="middle" font-size="14" fill="#991b1b" font-weight="bold">✅ أشكال دائماً متشابهة vs ❌ ليست كذلك</text>
+<rect x="40" y="60" width="50" height="50" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+<rect x="105" y="45" width="80" height="80" fill="#fecaca" stroke="#dc2626" stroke-width="2"/>
+<text x="92" y="130" text-anchor="middle" font-size="11" fill="#166534" font-weight="bold">✓ أي مربعين</text>
+<text x="92" y="146" text-anchor="middle" font-size="9" fill="#166534">زوايا 90° وأضلاع متناسبة دائماً</text>
+<rect x="230" y="70" width="40" height="80" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+<rect x="285" y="70" width="90" height="80" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+<text x="300" y="170" text-anchor="middle" font-size="11" fill="#991b1b" font-weight="bold">✗ مستطيلا ن عموماً</text>
+<text x="300" y="186" text-anchor="middle" font-size="9" fill="#991b1b">2×4 و 3×5: النسب 2/3 ≠ 4/5</text>
+<rect x="40" y="196" width="390" height="34" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+<text x="240" y="218" text-anchor="middle" font-size="10" fill="#92400e" font-weight="bold">دائماً متشابهة: أي مربعين، أي دائرتين، أي مثلثين متساويي الأضلاع</text>
+</svg>`,
+
+model_car: `<svg class="svg-graph" width="480" height="220" viewBox="0 0 480 220" xmlns="http://www.w3.org/2000/svg">
+<rect x="5" y="5" width="470" height="210" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+<text x="240" y="28" text-anchor="middle" font-size="14" fill="#065f46" font-weight="bold">🚗 نموذج مصغّر: مقياس 1:24</text>
+<g><rect x="50" y="105" width="60" height="18" rx="6" fill="#a7f3d0" stroke="#10b981" stroke-width="2"/><circle cx="65" cy="126" r="6" fill="#065f46"/><circle cx="95" cy="126" r="6" fill="#065f46"/><rect x="62" y="95" width="30" height="12" rx="4" fill="#a7f3d0" stroke="#10b981" stroke-width="2"/></g>
+<text x="80" y="150" text-anchor="middle" font-size="10" fill="#065f46" font-weight="bold">15 cm</text>
+<path d="M 125 112 L 175 112" stroke="#dc2626" stroke-width="2.5" marker-end="url(#xc2)"/>
+<text x="150" y="102" text-anchor="middle" font-size="11" fill="#dc2626" font-weight="bold">×24</text>
+<g><rect x="190" y="70" width="240" height="60" rx="14" fill="#6ee7b7" stroke="#047857" stroke-width="2.5"/><circle cx="240" cy="136" r="18" fill="#064e3b"/><circle cx="380" cy="136" r="18" fill="#064e3b"/><rect x="240" y="45" width="120" height="35" rx="10" fill="#6ee7b7" stroke="#047857" stroke-width="2.5"/></g>
+<text x="310" y="165" text-anchor="middle" font-size="11" fill="#065f46" font-weight="bold">360 cm = 3.6 m</text>
+<rect x="50" y="178" width="380" height="30" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+<text x="240" y="198" text-anchor="middle" font-size="11" fill="#166534" font-family="'Amiri',serif" font-weight="bold">15 × 24 = 360 cm = 3.6 m ✓</text>
+<defs><marker id="xc2" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0,0 L0,8 L8,4 z" fill="#dc2626"/></marker></defs>
+</svg>`
+};
+
+// ==================== EXAM DATA ====================
+const originalExamData = {
+sections: [
+{ id:'s1', title:{ar:'🔹 القسم 1: معامل المقياس ومحيطات المستطيلات (مثل 22) (Q1-Q5)',en:'🔹 Section 1: Scale Factor & Rectangle Perimeters (like 22) (Q1-Q5)'}, questions:[
+{ q:{ar:'<strong>السؤال 1 (تمرين 22):</strong> المستطيل ABCD عرضه 8 m وطوله 20 m، والمستطيل QRST المتشابه معه طوله 40 m. ما معامل المقياس من ABCD إلى QRST؟ وما محيط كل منهما؟',en:'<strong>Q1 (Ex. 22):</strong> Rectangle ABCD is 8 m by 20 m; similar rectangle QRST has length 40 m. Scale factor ABCD→QRST and perimeters?'},
+  svg: svgGraphs.rects22,
+  options:[{ar:'<span class="math-display">2:1 ; 56 m , 112 m</span>',en:'<span class="math-display">2:1 ; 56 m , 112 m</span>'},{ar:'<span class="math-display">1:2 ; 56 m , 112 m</span>',en:'<span class="math-display">1:2 ; 56 m , 112 m</span>'},{ar:'<span class="math-display">1:2 ; 28 m , 56 m</span>',en:'<span class="math-display">1:2 ; 28 m , 56 m</span>'},{ar:'<span class="math-display">1:4 ; 56 m , 224 m</span>',en:'<span class="math-display">1:4 ; 56 m , 224 m</span>'}],
+  correct:1, answer:{ar:'20/40 = 1/2 ⇒ 1:2. محيط ABCD = 2(8+20) = 56، ومحيط QRST = 2×56 = 112',en:'20/40 = 1:2. P(ABCD)=56, P(QRST)=112'} },
+{ q:{ar:'<strong>السؤال 2:</strong> مستطيل أبعاده 6 m و 10 m، ومستطيل مشابه طوله المتناظر 25 m. ما معامل المقياس (من الأول للثاني) ومحيطا المستطيلين؟',en:'<strong>Q2:</strong> A 6 m × 10 m rectangle; similar rectangle has corresponding length 25 m. Scale factor and perimeters?'},
+  options:[{ar:'<span class="math-display">2:5 ; 32 m , 80 m</span>',en:'<span class="math-display">2:5 ; 32 m , 80 m</span>'},{ar:'<span class="math-display">5:2 ; 80 m , 32 m</span>',en:'<span class="math-display">5:2 ; 80 m , 32 m</span>'},{ar:'<span class="math-display">2:5 ; 16 m , 40 m</span>',en:'<span class="math-display">2:5 ; 16 m , 40 m</span>'},{ar:'<span class="math-display">3:5 ; 32 m , 80 m</span>',en:'<span class="math-display">3:5 ; 32 m , 80 m</span>'}],
+  correct:0, answer:{ar:'10/25 = 2/5. المحيط الأول 2(6+10)=32، الثاني 32×5/2=80',en:'10/25 = 2:5; P1=32, P2=80'} },
+{ q:{ar:'<strong>السؤال 3:</strong> مستطيلان متشابهان معامل المقياس بينهما 3:4. إذا كان محيط الأصغر 42 m فما محيط الأكبر؟',en:'<strong>Q3:</strong> Similar rectangles with scale factor 3:4. Smaller perimeter 42 m; larger perimeter?'},
+  options:[{ar:'<span class="math-display">56 m</span>',en:'<span class="math-display">56 m</span>'},{ar:'<span class="math-display">48 m</span>',en:'<span class="math-display">48 m</span>'},{ar:'<span class="math-display">64 m</span>',en:'<span class="math-display">64 m</span>'},{ar:'<span class="math-display">72 m</span>',en:'<span class="math-display">72 m</span>'}],
+  correct:0, answer:{ar:'42 × 4/3 = 56 m',en:'42 × 4/3 = 56 m'} },
+{ q:{ar:'<strong>السؤال 4:</strong> مستطيل أبعاده 5 m و 15 m، ومستطيل مشابه عرضه المتناظر 10 m. ما محيط المستطيل الثاني؟',en:'<strong>Q4:</strong> Rectangle 5 m × 15 m; similar rectangle has corresponding width 10 m. Second perimeter?'},
+  options:[{ar:'<span class="math-display">60 m</span>',en:'<span class="math-display">60 m</span>'},{ar:'<span class="math-display">80 m</span>',en:'<span class="math-display">80 m</span>'},{ar:'<span class="math-display">40 m</span>',en:'<span class="math-display">40 m</span>'},{ar:'<span class="math-display">100 m</span>',en:'<span class="math-display">100 m</span>'}],
+  correct:1, answer:{ar:'المقياس 5:10 = 1:2 ⇒ المحيط 40 × 2 = 80 m',en:'Scale 1:2 ⇒ P = 40×2 = 80 m'} },
+{ q:{ar:'<strong>السؤال 5:</strong> مربعان متشابهان معامل المقياس 2:3. إذا كان محيط الأصغر 24 cm فما محيط الأكبر؟',en:'<strong>Q5:</strong> Similar squares, scale 2:3. Smaller perimeter 24 cm; larger?'},
+  options:[{ar:'<span class="math-display">36 cm</span>',en:'<span class="math-display">36 cm</span>'},{ar:'<span class="math-display">27 cm</span>',en:'<span class="math-display">27 cm</span>'},{ar:'<span class="math-display">48 cm</span>',en:'<span class="math-display">48 cm</span>'},{ar:'<span class="math-display">54 cm</span>',en:'<span class="math-display">54 cm</span>'}],
+  correct:0, answer:{ar:'24 × 3/2 = 36 cm',en:'24 × 3/2 = 36 cm'} }
+]},
+{ id:'s2', title:{ar:'🔹 القسم 2: محيطات المثلثات المتشابهة (مثل 23، 24) (Q6-Q10)',en:'🔹 Section 2: Similar Triangle Perimeters (like 23, 24) (Q6-Q10)'}, questions:[
+{ q:{ar:'<strong>السؤال 6 (تمرين 23):</strong> إذا كان △ABC ~ △DEF و AB = 5، BC = 6، CA = 7، DE = 3، فما محيط △DEF؟',en:'<strong>Q6 (Ex. 23):</strong> △ABC ~ △DEF with AB=5, BC=6, CA=7, DE=3. Perimeter of △DEF?'},
+  svg: svgGraphs.tri23,
+  options:[{ar:'<span class="math-display">18</span>',en:'<span class="math-display">18</span>'},{ar:'<span class="math-display">30</span>',en:'<span class="math-display">30</span>'},{ar:'<span class="math-display">10.8</span>',en:'<span class="math-display">10.8</span>'},{ar:'<span class="math-display">9</span>',en:'<span class="math-display">9</span>'}],
+  correct:2, answer:{ar:'المقياس DE/AB = 3/5. محيط ABC = 18 ⇒ محيط DEF = 18 × 3/5 = 10.8',en:'Scale 3/5; P = 18 × 3/5 = 10.8'} },
+{ q:{ar:'<strong>السؤال 7 (تمرين 24):</strong> إذا كان △WZX ~ △SRT و ST = 6 و WX = 5 ومحيط △SRT = 15، فما محيط △WZX؟',en:'<strong>Q7 (Ex. 24):</strong> △WZX ~ △SRT with ST=6, WX=5, P(SRT)=15. Perimeter of △WZX?'},
+  svg: svgGraphs.tri24,
+  options:[{ar:'<span class="math-display">12.5</span>',en:'<span class="math-display">12.5</span>'},{ar:'<span class="math-display">18</span>',en:'<span class="math-display">18</span>'},{ar:'<span class="math-display">10</span>',en:'<span class="math-display">10</span>'},{ar:'<span class="math-display">14</span>',en:'<span class="math-display">14</span>'}],
+  correct:0, answer:{ar:'المقياس WX/ST = 5/6 ⇒ المحيط = 15 × 5/6 = 12.5',en:'Scale 5/6 ⇒ P = 15 × 5/6 = 12.5'} },
+{ q:{ar:'<strong>السؤال 8:</strong> إذا كان △PQR ~ △XYZ و PQ = 4، QR = 5، RP = 7، XY = 8، فما محيط △XYZ؟',en:'<strong>Q8:</strong> △PQR ~ △XYZ with PQ=4, QR=5, RP=7, XY=8. Perimeter of △XYZ?'},
+  options:[{ar:'<span class="math-display">32</span>',en:'<span class="math-display">32</span>'},{ar:'<span class="math-display">16</span>',en:'<span class="math-display">16</span>'},{ar:'<span class="math-display">24</span>',en:'<span class="math-display">24</span>'},{ar:'<span class="math-display">8</span>',en:'<span class="math-display">8</span>'}],
+  correct:0, answer:{ar:'المقياس 4:8 = 1:2. محيط PQR = 16 ⇒ محيط XYZ = 32',en:'Scale 1:2; P = 16×2 = 32'} },
+{ q:{ar:'<strong>السؤال 9:</strong> △ABC ~ △DEF، محيط ABC = 27 ومحيط DEF = 45. إذا كان AB = 6 فما DE؟',en:'<strong>Q9:</strong> △ABC ~ △DEF, P(ABC)=27, P(DEF)=45. If AB=6, then DE=?'},
+  options:[{ar:'<span class="math-display">10</span>',en:'<span class="math-display">10</span>'},{ar:'<span class="math-display">8</span>',en:'<span class="math-display">8</span>'},{ar:'<span class="math-display">12</span>',en:'<span class="math-display">12</span>'},{ar:'<span class="math-display">15</span>',en:'<span class="math-display">15</span>'}],
+  correct:0, answer:{ar:'نسبة المحيطين 27:45 = 3:5 ⇒ DE = 6 × 5/3 = 10',en:'Perimeter ratio 3:5 ⇒ DE = 10'} },
+{ q:{ar:'<strong>السؤال 10:</strong> مثلثان متشابهان معامل المقياس (الأصغر:الأكبر) 5:8. إذا كان محيط الأكبر 56 cm فما محيط الأصغر؟',en:'<strong>Q10:</strong> Similar triangles, scale (small:large) 5:8. Larger perimeter 56 cm; smaller?'},
+  options:[{ar:'<span class="math-display">35 cm</span>',en:'<span class="math-display">35 cm</span>'},{ar:'<span class="math-display">40 cm</span>',en:'<span class="math-display">40 cm</span>'},{ar:'<span class="math-display">30 cm</span>',en:'<span class="math-display">30 cm</span>'},{ar:'<span class="math-display">45 cm</span>',en:'<span class="math-display">45 cm</span>'}],
+  correct:0, answer:{ar:'56 × 5/8 = 35 cm',en:'56 × 5/8 = 35 cm'} }
+]},
+{ id:'s3', title:{ar:'🔹 القسم 3: إيجاد الأضلاع بالتناسب (Q11-Q15)',en:'🔹 Section 3: Finding Sides by Proportion (Q11-Q15)'}, questions:[
+{ q:{ar:'<strong>السؤال 11:</strong> في مضلعين متشابهين ضلعان متناظران طولا 6 cm و 9 cm. إذا كان ضلع آخر في الأول 8 cm فطوله في الثاني:',en:'<strong>Q11:</strong> Corresponding sides 6 cm and 9 cm. Another side of the first is 8 cm; in the second?'},
+  options:[{ar:'<span class="math-display">12 cm</span>',en:'<span class="math-display">12 cm</span>'},{ar:'<span class="math-display">10 cm</span>',en:'<span class="math-display">10 cm</span>'},{ar:'<span class="math-display">13.5 cm</span>',en:'<span class="math-display">13.5 cm</span>'},{ar:'<span class="math-display">16 cm</span>',en:'<span class="math-display">16 cm</span>'}],
+  correct:0, answer:{ar:'6/9 = 8/x ⇒ 6x = 72 ⇒ x = 12',en:'6/9 = 8/x ⇒ x = 12'} },
+{ q:{ar:'<strong>السؤال 12:</strong> △ABC ~ △DEF و AB/DE = 2/3. إذا كان BC = 10 فما EF؟',en:'<strong>Q12:</strong> △ABC ~ △DEF, AB/DE = 2/3. If BC = 10, then EF = ?'},
+  options:[{ar:'<span class="math-display">15</span>',en:'<span class="math-display">15</span>'},{ar:'<span class="math-display">6.67</span>',en:'<span class="math-display">6.67</span>'},{ar:'<span class="math-display">12</span>',en:'<span class="math-display">12</span>'},{ar:'<span class="math-display">20</span>',en:'<span class="math-display">20</span>'}],
+  correct:0, answer:{ar:'BC/EF = 2/3 ⇒ EF = 10 × 3/2 = 15',en:'EF = 10 × 3/2 = 15'} },
+{ q:{ar:'<strong>السؤال 13:</strong> مستطيلا ن متشابهان معامل المقياس 1:4. إذا كان عرض الأصغر 3.5 cm فعرض الأكبر:',en:'<strong>Q13:</strong> Similar rectangles, scale 1:4. Smaller width 3.5 cm; larger width?'},
+  options:[{ar:'<span class="math-display">14 cm</span>',en:'<span class="math-display">14 cm</span>'},{ar:'<span class="math-display">7 cm</span>',en:'<span class="math-display">7 cm</span>'},{ar:'<span class="math-display">10.5 cm</span>',en:'<span class="math-display">10.5 cm</span>'},{ar:'<span class="math-display">17.5 cm</span>',en:'<span class="math-display">17.5 cm</span>'}],
+  correct:0, answer:{ar:'3.5 × 4 = 14 cm',en:'3.5 × 4 = 14 cm'} },
+{ q:{ar:'<strong>السؤال 14:</strong> خماسيان متشابهان نسبة أضلاعهما 4:7. إذا كان ضلع الأكبر 28 m فالضلع المتناظر في الأصغر:',en:'<strong>Q14:</strong> Similar pentagons, side ratio 4:7. Larger side 28 m; corresponding smaller side?'},
+  options:[{ar:'<span class="math-display">16 m</span>',en:'<span class="math-display">16 m</span>'},{ar:'<span class="math-display">21 m</span>',en:'<span class="math-display">21 m</span>'},{ar:'<span class="math-display">12 m</span>',en:'<span class="math-display">12 m</span>'},{ar:'<span class="math-display">49 m</span>',en:'<span class="math-display">49 m</span>'}],
+  correct:0, answer:{ar:'28 × 4/7 = 16 m',en:'28 × 4/7 = 16 m'} },
+{ q:{ar:'<strong>السؤال 15:</strong> △MNO ~ △PQR و MN:PQ = 3:5. إذا كان محيط MNO = 33 cm فما محيط PQR؟',en:'<strong>Q15:</strong> △MNO ~ △PQR, MN:PQ = 3:5. P(MNO)=33 cm; P(PQR)=?'},
+  options:[{ar:'<span class="math-display">55 cm</span>',en:'<span class="math-display">55 cm</span>'},{ar:'<span class="math-display">45 cm</span>',en:'<span class="math-display">45 cm</span>'},{ar:'<span class="math-display">19.8 cm</span>',en:'<span class="math-display">19.8 cm</span>'},{ar:'<span class="math-display">65 cm</span>',en:'<span class="math-display">65 cm</span>'}],
+  correct:0, answer:{ar:'33 × 5/3 = 55 cm',en:'33 × 5/3 = 55 cm'} }
+]},
+{ id:'s4', title:{ar:'🔹 القسم 4: نسب المساحات (امتداد الخواص) (Q16-Q20)',en:'🔹 Section 4: Area Ratios (Extension) (Q16-Q20)'}, questions:[
+{ q:{ar:'<strong>السؤال 16:</strong> مثلثان متشابهان معامل المقياس 2:5. ما نسبة مساحتيهما؟',en:'<strong>Q16:</strong> Similar triangles, scale 2:5. Area ratio?'},
+  svg: svgGraphs.area_squares,
+  options:[{ar:'<span class="math-display">4:25</span>',en:'<span class="math-display">4:25</span>'},{ar:'<span class="math-display">2:5</span>',en:'<span class="math-display">2:5</span>'},{ar:'<span class="math-display">25:4</span>',en:'<span class="math-display">25:4</span>'},{ar:'<span class="math-display">8:125</span>',en:'<span class="math-display">8:125</span>'}],
+  correct:0, answer:{ar:'نسبة المساحتين = مربع المقياس = 2²:5² = 4:25',en:'Area ratio = k² = 4:25'} },
+{ q:{ar:'<strong>السؤال 17:</strong> مستطيلا ن متشابهان معامل المقياس 1:3. إذا كانت مساحة الأصغر 12 m² فمساحة الأكبر:',en:'<strong>Q17:</strong> Similar rectangles, scale 1:3. Smaller area 12 m²; larger area?'},
+  options:[{ar:'<span class="math-display">108 m²</span>',en:'<span class="math-display">108 m²</span>'},{ar:'<span class="math-display">36 m²</span>',en:'<span class="math-display">36 m²</span>'},{ar:'<span class="math-display">72 m²</span>',en:'<span class="math-display">72 m²</span>'},{ar:'<span class="math-display">24 m²</span>',en:'<span class="math-display">24 m²</span>'}],
+  correct:0, answer:{ar:'12 × 3² = 12 × 9 = 108 m²',en:'12 × 9 = 108 m²'} },
+{ q:{ar:'<strong>السؤال 18:</strong> نسبة مساحتي مضلعين متشابهين 49:81. ما نسبة محيطيهما؟',en:'<strong>Q18:</strong> Area ratio of similar polygons 49:81. Perimeter ratio?'},
+  options:[{ar:'<span class="math-display">7:9</span>',en:'<span class="math-display">7:9</span>'},{ar:'<span class="math-display">49:81</span>',en:'<span class="math-display">49:81</span>'},{ar:'<span class="math-display">81:49</span>',en:'<span class="math-display">81:49</span>'},{ar:'<span class="math-display">5:7</span>',en:'<span class="math-display">5:7</span>'}],
+  correct:0, answer:{ar:'نسبة المحيطين = الجذر التربيعي لنسبة المساحتين = √49:√81 = 7:9',en:'Perimeter ratio = √(49:81) = 7:9'} },
+{ q:{ar:'<strong>السؤال 19:</strong> معامل المقياس (الأكبر:الأصغر) 4:1 ومساحة الأكبر 96 cm². مساحة الأصغر:',en:'<strong>Q19:</strong> Scale (large:small) 4:1, larger area 96 cm². Smaller area?'},
+  options:[{ar:'<span class="math-display">6 cm²</span>',en:'<span class="math-display">6 cm²</span>'},{ar:'<span class="math-display">24 cm²</span>',en:'<span class="math-display">24 cm²</span>'},{ar:'<span class="math-display">12 cm²</span>',en:'<span class="math-display">12 cm²</span>'},{ar:'<span class="math-display">4 cm²</span>',en:'<span class="math-display">4 cm²</span>'}],
+  correct:0, answer:{ar:'96 ÷ 4² = 96 ÷ 16 = 6 cm²',en:'96 ÷ 16 = 6 cm²'} },
+{ q:{ar:'<strong>السؤال 20:</strong> مربعان طول ضلعيهما 6 cm و 9 cm. ما نسبة مساحتيهما (الأول:الثاني)؟',en:'<strong>Q20:</strong> Squares with sides 6 cm and 9 cm. Area ratio (first:second)?'},
+  options:[{ar:'<span class="math-display">4:9</span>',en:'<span class="math-display">4:9</span>'},{ar:'<span class="math-display">2:3</span>',en:'<span class="math-display">2:3</span>'},{ar:'<span class="math-display">9:4</span>',en:'<span class="math-display">9:4</span>'},{ar:'<span class="math-display">6:9</span>',en:'<span class="math-display">6:9</span>'}],
+  correct:0, answer:{ar:'36:81 = 4:9 (وهي مربع 2:3)',en:'36:81 = 4:9 (square of 2:3)'} }
+]},
+{ id:'s5', title:{ar:'🔹 القسم 5: مفاهيم التشابه والتحقّق (Q21-Q25)',en:'🔹 Section 5: Similarity Concepts & Checking (Q21-Q25)'}, questions:[
+{ q:{ar:'<strong>السؤال 21:</strong> مضلعان زواياهما المتناظرة متطابقة وأضلاعهما المتناظرة متناسبة. هذان المضلعان:',en:'<strong>Q21:</strong> Two polygons have congruent corresponding angles and proportional corresponding sides. They are:'},
+  svg: svgGraphs.rules_visual,
+  options:[{ar:'متشابهان',en:'Similar'},{ar:'متطابقان',en:'Congruent'},{ar:'متوازيان',en:'Parallel'},{ar:'ليسا متشابهين',en:'Not similar'}],
+  correct:0, answer:{ar:'هذا هو تعريف التشابه تماماً',en:'This is exactly the definition of similarity'} },
+{ q:{ar:'<strong>السؤال 22:</strong> إذا كان △ABC ~ △DEF فأي التناسبات الآتية صحيحة؟',en:'<strong>Q22:</strong> If △ABC ~ △DEF, which proportion is correct?'},
+  options:[{ar:'<span class="math-display">AB/DE = BC/EF = CA/FD</span>',en:'<span class="math-display">AB/DE = BC/EF = CA/FD</span>'},{ar:'<span class="math-display">AB/EF = BC/DE = CA/FD</span>',en:'<span class="math-display">AB/EF = BC/DE = CA/FD</span>'},{ar:'<span class="math-display">AB/DE = BC/FD = CA/EF</span>',en:'<span class="math-display">AB/DE = BC/FD = CA/EF</span>'},{ar:'<span class="math-display">AB/DF = BC/ED = CA/FE</span>',en:'<span class="math-display">AB/DF = BC/ED = CA/FE</span>'}],
+  correct:0, answer:{ar:'الترتيب ABC ~ DEF يعني A↔D و B↔E و C↔F',en:'Order ABC ~ DEF means A↔D, B↔E, C↔F'} },
+{ q:{ar:'<strong>السؤال 23:</strong> أي مما يلي دائماً متشابه مهما اختلفت القياسات؟',en:'<strong>Q23:</strong> Which are ALWAYS similar regardless of size?'},
+  svg: svgGraphs.always_similar,
+  options:[{ar:'أي مربعين',en:'Any two squares'},{ar:'أي مستطيلين',en:'Any two rectangles'},{ar:'أي معيّنين',en:'Any two rhombi'},{ar:'أي مثلثين متساويي الساقين',en:'Any two isosceles triangles'}],
+  correct:0, answer:{ar:'المربعات زواياها 90° وأضلاعها دائماً متناسبة؛ المستطيلات قد تختلف نسبها',en:'Squares: 90° angles and sides always proportional; rectangles may differ'} },
+{ q:{ar:'<strong>السؤال 24:</strong> هل المستطيل 2×4 مشابه للمستطيل 3×5؟',en:'<strong>Q24:</strong> Is a 2×4 rectangle similar to a 3×5 rectangle?'},
+  options:[{ar:'لا، لأن 2/3 ≠ 4/5',en:'No, because 2/3 ≠ 4/5'},{ar:'نعم، لأن الزوايا متطابقة',en:'Yes, because angles are congruent'},{ar:'نعم، لأن المحيطين متناسبان',en:'Yes, because perimeters are proportional'},{ar:'لا يمكن التحديد',en:'Cannot determine'}],
+  correct:0, answer:{ar:'التشابه يتطلب تناسب كل الأضلاع المتناظرة: 2/3 ≠ 4/5 ⇒ غير مشابهين',en:'Similarity requires all sides proportional: 2/3 ≠ 4/5 ⇒ not similar'} },
+{ q:{ar:'<strong>السؤال 25:</strong> مثلثان متشابهان معامل المقياس بينهما 1:1. إذن المثلثان:',en:'<strong>Q25:</strong> Two similar triangles with scale factor 1:1 are:'},
+  options:[{ar:'متطابقان',en:'Congruent'},{ar:'متشابهان فقط',en:'Only similar'},{ar:'غير متشابهين',en:'Not similar'},{ar:'قائما الزاوية',en:'Right triangles'}],
+  correct:0, answer:{ar:'مقياس 1:1 يعني تطابق الأضلاع ⇒ تطابق',en:'Scale 1:1 means equal sides ⇒ congruent'} }
+]},
+{ id:'s6', title:{ar:'🔹 القسم 6: تطبيقات حياتية (Q26-Q30)',en:'🔹 Section 6: Real-Life Applications (Q26-Q30)'}, questions:[
+{ q:{ar:'<strong>السؤال 26:</strong> نموذج سيارة طوله 15 cm بمقياس 1:24. ما طول السيارة الحقيقية؟',en:'<strong>Q26:</strong> A model car is 15 cm at scale 1:24. Actual car length?'},
+  svg: svgGraphs.model_car,
+  options:[{ar:'<span class="math-display">3.6 m</span>',en:'<span class="math-display">3.6 m</span>'},{ar:'<span class="math-display">2.4 m</span>',en:'<span class="math-display">2.4 m</span>'},{ar:'<span class="math-display">36 m</span>',en:'<span class="math-display">36 m</span>'},{ar:'<span class="math-display">0.625 m</span>',en:'<span class="math-display">0.625 m</span>'}],
+  correct:0, answer:{ar:'15 × 24 = 360 cm = 3.6 m',en:'15 × 24 = 360 cm = 3.6 m'} },
+{ q:{ar:'<strong>السؤال 27:</strong> صورة فوتوغرافية 10×15 cm كُبّرت لتصبح بعرض 30 cm. ما محيط الصورة المكبّرة؟',en:'<strong>Q27:</strong> A 10×15 cm photo enlarged to width 30 cm. Perimeter of enlargement?'},
+  options:[{ar:'<span class="math-display">150 cm</span>',en:'<span class="math-display">150 cm</span>'},{ar:'<span class="math-display">75 cm</span>',en:'<span class="math-display">75 cm</span>'},{ar:'<span class="math-display">100 cm</span>',en:'<span class="math-display">100 cm</span>'},{ar:'<span class="math-display">50 cm</span>',en:'<span class="math-display">50 cm</span>'}],
+  correct:0, answer:{ar:'المقياس 10:30 = 1:3 ⇒ الأبعاد 30×45 ⇒ المحيط 2(30+45) = 150 cm',en:'Scale 1:3 ⇒ 30×45 ⇒ P = 150 cm'} },
+{ q:{ar:'<strong>السؤال 28:</strong> حديقتان متشابهتان محيطاهما 24 m و 60 m. ما معامل المقياس (الأصغر:الأكبر)؟',en:'<strong>Q28:</strong> Similar gardens with perimeters 24 m and 60 m. Scale factor (small:large)?'},
+  options:[{ar:'<span class="math-display">2:5</span>',en:'<span class="math-display">2:5</span>'},{ar:'<span class="math-display">5:2</span>',en:'<span class="math-display">5:2</span>'},{ar:'<span class="math-display">12:25</span>',en:'<span class="math-display">12:25</span>'},{ar:'<span class="math-display">4:25</span>',en:'<span class="math-display">4:25</span>'}],
+  correct:0, answer:{ar:'24/60 = 2/5 ⇒ 2:5',en:'24/60 = 2:5'} },
+{ q:{ar:'<strong>السؤال 29:</strong> شخص طوله 1.8 m ظلّه 2.4 m، وعمود ظلّه 12 m في اللحظة نفسها. ما ارتفاع العمود؟',en:'<strong>Q29:</strong> A 1.8 m person casts 2.4 m shadow; a pole casts 12 m at same time. Pole height?'},
+  options:[{ar:'<span class="math-display">9 m</span>',en:'<span class="math-display">9 m</span>'},{ar:'<span class="math-display">16 m</span>',en:'<span class="math-display">16 m</span>'},{ar:'<span class="math-display">8 m</span>',en:'<span class="math-display">8 m</span>'},{ar:'<span class="math-display">10 m</span>',en:'<span class="math-display">10 m</span>'}],
+  correct:0, answer:{ar:'1.8/2.4 = h/12 ⇒ h = 12 × 0.75 = 9 m (مثلثان متشابهان)',en:'1.8/2.4 = h/12 ⇒ h = 9 m (similar triangles)'} },
+{ q:{ar:'<strong>السؤال 30:</strong> مخطط هندسي: غرفة 4 m × 5 m رُسمت 8 cm × 10 cm. ما مقياس الرسم؟',en:'<strong>Q30:</strong> Blueprint: 4 m × 5 m room drawn as 8 cm × 10 cm. Scale?'},
+  options:[{ar:'<span class="math-display">1:50</span>',en:'<span class="math-display">1:50</span>'},{ar:'<span class="math-display">1:25</span>',en:'<span class="math-display">1:25</span>'},{ar:'<span class="math-display">2:5</span>',en:'<span class="math-display">2:5</span>'},{ar:'<span class="math-display">1:500</span>',en:'<span class="math-display">1:500</span>'}],
+  correct:0, answer:{ar:'4 m = 400 cm ⇒ 8/400 = 1/50 ⇒ المقياس 1:50',en:'400 cm ⇒ 8/400 = 1:50'} }
+]}
+]};
+
+function shuffleArray(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(rng()*(i+1));[r[i],r[j]]=[r[j],r[i]]}return r}
+function prepareShuffledExam(){rng=mulberry32(currentSeed);examData=JSON.parse(JSON.stringify(originalExamData));correctAnswersMap={};let g=0;examData.sections.forEach(s=>{s.questions=shuffleArray(s.questions);s.questions.forEach(q=>{const oc=q.options.map((o,i)=>({option:o,isCorrect:i===q.correct}));const sh=shuffleArray(oc);q.options=sh.map(o=>o.option);q.correct=sh.findIndex(o=>o.isCorrect);correctAnswersMap[g]=String.fromCharCode(97+q.correct);g++})})}
+function reshuffleExam(){if(confirm(currentLang==='ar'?'🔄 سيتم إنشاء أسئلة جديدة ومسح إجاباتك. هل أنت متأكد؟':'🔄 New questions will be generated. Are you sure?')){currentSeed=Date.now();timeRemaining=TOTAL_TIME;answersVisible=false;prepareShuffledExam();renderExam();saveState();alert(currentLang==='ar'?'🎲 تم تغيير الأسئلة! حظاً موفقاً! 🍀':'🎲 Questions changed! Good luck! 🍀');window.scrollTo({top:0,behavior:'smooth'})}}
+function setLanguage(lang){currentLang=lang;document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';document.getElementById('btn-ar').classList.toggle('active',lang==='ar');document.getElementById('btn-en').classList.toggle('active',lang==='en');document.body.classList.toggle('en-mode',lang==='en');document.querySelectorAll('[data-ar]').forEach(el=>{el.textContent=el.getAttribute('data-'+lang)});document.querySelectorAll('[data-placeholder-ar]').forEach(el=>{el.placeholder=el.getAttribute('data-placeholder-'+lang)});renderExam();saveState(false)}
+function renderExam(){const container=document.getElementById('exam-content');const lbl={option:['a)','b)','c)','d)'],answer:currentLang==='ar'?'✅ الإجابة:':'✅ Answer:'};let html='',g=0;
+examData.sections.forEach((section,si)=>{const bc=['module-1','module-2','module-3','module-4','module-5','module-6'][si];html+='<section class="bg-white p-6 rounded-2xl shadow-lg border-2 border-blue-100"><div class="text-center mb-4"><span class="module-badge '+bc+'">'+section.title[currentLang]+'</span></div><ol class="space-y-4 text-sm">';
+section.questions.forEach(q=>{html+='<li class="border-r-4 border-blue-400 pr-4 py-2" id="q-'+g+'" style="border-right:4px solid #1d4ed8;padding-right:1rem;"><strong class="text-blue-700">'+(g+1)+'.</strong> '+q.q[currentLang]+'<br>';
+if(q.svg)html+='<div class="graph-container">'+q.svg+'</div>';
+q.options.forEach((opt,oi)=>{html+='<label class="cursor-pointer block mt-2 mr-4 hover:bg-blue-50 rounded-lg p-2 transition" style="margin-right:1rem;"><input type="radio" name="q'+g+'" value="'+String.fromCharCode(97+oi)+'" class="mr-2 ml-2"><span class="arabic-math">'+lbl.option[oi]+' '+opt[currentLang]+'</span></label>'});
+html+='<div class="answer-box text-green-700 mt-3 font-medium '+(answersVisible?'':'hidden')+' bg-green-50 rounded-lg p-3 border border-green-200">'+lbl.answer+' '+lbl.option[q.correct]+' <span class="arabic-math">'+q.options[q.correct][currentLang]+'</span><br><span class="text-sm text-green-700 mt-2 block arabic-math">'+q.answer[currentLang]+'</span></div></li>';g++});
+html+='</ol></section>'});
+container.innerHTML=html}
+function startTimer(){updateTimerDisplay();timerInterval=setInterval(()=>{timeRemaining--;updateTimerDisplay();if(timeRemaining%60===0)saveState(false);if(timeRemaining<=600)document.getElementById('timer').classList.add('timer-warning');if(timeRemaining<=0){clearInterval(timerInterval);alert(currentLang==='ar'?'⏰ انتهى الوقت!':"⏰ Time's up!");gradeExam()}},1000)}
+function updateTimerDisplay(){const m=Math.floor(timeRemaining/60),s=timeRemaining%60;document.getElementById('timer').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function toggleAnswers(){answersVisible=!answersVisible;document.querySelectorAll('.answer-box').forEach(el=>el.classList.toggle('hidden',!answersVisible));saveState(false)}
+function gradeExam(){let cc=0;const ss=new Array(TOTAL_SECTIONS).fill(0);
+for(let i=0;i<TOTAL_QUESTIONS;i++){const sel=document.querySelector('input[name="q'+i+'"]:checked');const li=document.getElementById('q-'+i);if(li){const ok=sel&&sel.value===correctAnswersMap[i];if(ok){cc++;li.classList.add('correct');li.classList.remove('incorrect');ss[Math.floor(i/QUESTIONS_PER_SECTION)]++}else{li.classList.add('incorrect');li.classList.remove('correct')}}}
+const score=Math.round(cc/TOTAL_QUESTIONS*100);document.getElementById('res-total').textContent=score+' / 100';document.getElementById('res-name').textContent=document.getElementById('studentName').value||(currentLang==='ar'?'بطل':'Champion');document.getElementById('res-date').textContent=new Date().toLocaleDateString(currentLang==='ar'?'ar-AE':'en-US');
+const pc=document.getElementById('sections-performance');pc.innerHTML='';examData.sections.forEach((s,i)=>{pc.innerHTML+='<div class="flex justify-between items-center p-3 bg-white rounded-lg"><span class="text-gray-700">'+s.title[currentLang]+'</span><span class="font-bold text-blue-700">'+ss[i]+'/'+QUESTIONS_PER_SECTION+'</span></div>'});
+const badge=document.getElementById('success-badge');document.getElementById('success-percent').textContent=score+'%';
+if(currentLang==='ar'){if(score>=90){badge.textContent='🌟 ممتاز جداً!';badge.className='success-badge grade-excellent'}else if(score>=75){badge.textContent='👏 ممتاز!';badge.className='success-badge grade-good'}else if(score>=50){badge.textContent='👍 جيد';badge.className='success-badge grade-pass'}else{badge.textContent='💪 حاول مرة أخرى';badge.className='success-badge grade-fail'}}
+else{if(score>=90){badge.textContent='🌟 Outstanding!';badge.className='success-badge grade-excellent'}else if(score>=75){badge.textContent='👏 Excellent!';badge.className='success-badge grade-good'}else if(score>=50){badge.textContent='👍 Good';badge.className='success-badge grade-pass'}else{badge.textContent='💪 Try Again';badge.className='success-badge grade-fail'}}
+document.getElementById('results-panel').classList.remove('hidden');document.getElementById('results-panel').scrollIntoView({behavior:'smooth'});if(timerInterval)clearInterval(timerInterval)}
+function sendResultsToEmail(){const btn=document.getElementById('sendEmailBtn'),status=document.getElementById('emailStatus');btn.disabled=true;btn.textContent=currentLang==='ar'?'⏳ جاري الإرسال...':'⏳ Sending...';
+const name=document.getElementById('studentName').value||'N/A',klass=document.getElementById('studentClass').value||'N/A',date=document.getElementById('examDate').value||new Date().toLocaleDateString(),score=document.getElementById('res-total').textContent,rate=document.getElementById('success-percent').textContent,badge=document.getElementById('success-badge').textContent;
+let qh='<div style="font-family:Arial;direction:rtl"><h2>📐 '+(currentLang==='ar'?'نتيجة امتحان المضلعات المتشابهة - رياضيات 11 عام':'Similar Polygons Exam Result - Grade 11')+'</h2><p><b>الاسم:</b> '+name+'</p><p><b>الشعبة:</b> '+klass+'</p><p><b>التاريخ:</b> '+date+'</p><p><b>الدرجة:</b> '+score+' ('+rate+')</p><p><b>التقدير:</b> '+badge+'</p><hr><table style="width:100%;border-collapse:collapse"><tr style="background:#1d4ed8;color:white"><th style="padding:8px;border:1px solid #ddd">#</th><th style="padding:8px;border:1px solid #ddd">السؤال</th><th style="padding:8px;border:1px solid #ddd">إجابة الطالب</th><th style="padding:8px;border:1px solid #ddd">الصحيحة</th><th style="padding:8px;border:1px solid #ddd">النتيجة</th></tr>';
+let g=0;examData.sections.forEach(sec=>{qh+='<tr style="background:#dbeafe"><td colspan="5" style="padding:8px;font-weight:bold;border:1px solid #ddd">'+sec.title.ar+'</td></tr>';sec.questions.forEach(q=>{const sel=document.querySelector('input[name="q'+g+'"]:checked');const sv=sel?sel.value:null;const cv=correctAnswersMap[g];const ic=sv===cv;let sat=sv?q.options[sv.charCodeAt(0)-97][currentLang]:(currentLang==='ar'?'❌ لم يجب':'❌ No answer');const sac=ic?'#16a34a':'#dc2626';const cat=q.options[q.correct][currentLang];const rb=ic?'#f0fdf4':'#fef2f2';qh+='<tr style="background:'+rb+'"><td style="padding:8px;border:1px solid #ddd;text-align:center">'+(g+1)+'</td><td style="padding:8px;border:1px solid #ddd">'+q.q.ar.replace(/<[^>]+>/g,'').substring(0,70)+'...</td><td style="padding:8px;border:1px solid #ddd;color:'+sac+'">'+sat+'</td><td style="padding:8px;border:1px solid #ddd;color:#16a34a">'+cat+'</td><td style="padding:8px;border:1px solid #ddd;text-align:center">'+(ic?'✅':'❌')+'</td></tr>';g++})});
+qh+='</table></div>';
+emailjs.send(SERVICE_ID,TEMPLATE_ID,{to_email:TARGET_EMAIL,student_name:name,student_class:klass,exam_date:date,total_score:score,success_rate:rate,grade:badge,answers_table:qh})
+.then(()=>{status.textContent=currentLang==='ar'?'✅ تم الإرسال بنجاح!':'✅ Sent successfully!';status.style.color='#16a34a';btn.textContent=currentLang==='ar'?'✓ تم':'✓ Sent';alert(currentLang==='ar'?'تم إرسال النتيجة للمعلم بنجاح!':'Result sent to teacher successfully!')})
+.catch(err=>{status.textContent=currentLang==='ar'?'❌ فشل الإرسال':'❌ Failed';status.style.color='#dc2626';btn.disabled=false;btn.textContent=currentLang==='ar'?'📧 حاول مرة أخرى':'📧 Try Again'});}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  const saved=loadState();
+  if(saved&&saved.seed){currentSeed=saved.seed;currentLang=saved.lang||'ar';timeRemaining=saved.timeRemaining!==undefined?saved.timeRemaining:TOTAL_TIME;answersVisible=saved.answersVisible||false}else{currentSeed=Date.now()}
+  document.getElementById('btn-ar').classList.toggle('active',currentLang==='ar');
+  document.getElementById('btn-en').classList.toggle('active',currentLang==='en');
+  document.body.classList.toggle('en-mode',currentLang==='en');
+  document.documentElement.lang=currentLang;document.documentElement.dir=currentLang==='ar'?'rtl':'ltr';
+  document.querySelectorAll('[data-ar]').forEach(el=>{el.textContent=el.getAttribute('data-'+currentLang)});
+  document.querySelectorAll('[data-placeholder-ar]').forEach(el=>{el.placeholder=el.getAttribute('data-placeholder-'+currentLang)});
+  prepareShuffledExam();renderExam();
+  if(saved){if(saved.studentName)document.getElementById('studentName').value=saved.studentName;if(saved.studentClass)document.getElementById('studentClass').value=saved.studentClass;if(saved.examDate)document.getElementById('examDate').value=saved.examDate;if(saved.answers)restoreAnswers(saved.answers)}
+  setupAnswerListeners();setupInputListeners();
+  document.getElementById('method-holder').innerHTML=svgGraphs.rules_visual;
+  startTimer();
+});
+window.addEventListener('beforeunload',()=>saveState(false));
+</script>
+</body>
+</html>
